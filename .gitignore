@@ -5,3 +5,4 @@ dist/
 *.pyc
 static/js/kodiak.*
 static/uploads/
+.DS_Store

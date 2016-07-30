@@ -13,10 +13,6 @@ const preview = (force) => {
 };
 
 const run = () => {
-  editor = ace.edit('ace_editor');
-  editor.setTheme('ace/theme/tomorrow');
-  editor.setOption('wrap', 80);
-  editor.getSession().setMode('ace/mode/rst');
   ace.config.loadModule('ace/keybinding/vim', () => {
     const VimApi = ace.require('ace/keyboard/vim').CodeMirror.Vim;
     VimApi.defineEx('write', 'w', (cm) => {
@@ -24,6 +20,10 @@ const run = () => {
       preview(true);
     });
   });
+  editor = ace.edit('ace_editor');
+  editor.setTheme('ace/theme/tomorrow');
+  editor.setOption('wrap', 80);
+  editor.getSession().setMode('ace/mode/rst');
   editor.setKeyboardHandler('ace/keyboard/vim');
 
   window.setInterval(() => preview(), 5000);

@@ -15,3 +15,10 @@ Todo:
 - Style and correctly handle meta data
 - Facebook/twitter microtags
 - RSS feed (multiple, public, limited, all)
+
+#Setup
+
+```
+pip install -r /path/to/requirements.txt
+npm install
+```
