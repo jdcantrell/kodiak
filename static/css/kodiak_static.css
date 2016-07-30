@@ -1,0 +1,36 @@
+/* base styles */
+.document {
+  max-width: 820px;
+  margin: auto;
+  font-family: 'FantasqueSansMonoRegular';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 18px;
+  color: #333;
+}
+
+.document img {
+  max-width: 800px;
+}
+
+
+h1 {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+img {
+  display: inline-block;
+}
+
+.metadata {
+  color: #555;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* editor styles */
+body {
+  transform-origin: 0 0;
+  min-width: 820px;
+}

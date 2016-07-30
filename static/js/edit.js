@@ -1,4 +1,5 @@
 /* globals ace */
+import ace from 'ace-builds/src-min-noconflict/ace'
 let editor;
 
 const previewFrame = document.getElementById('preview');
@@ -15,7 +16,6 @@ const preview = (force) => {
 const run = () => {
   editor = ace.edit('ace_editor');
   editor.setTheme('ace/theme/tomorrow');
-  editor.setOption('wrap', 80);
   editor.getSession().setMode('ace/mode/rst');
   ace.config.loadModule('ace/keybinding/vim', () => {
     const VimApi = ace.require('ace/keyboard/vim').CodeMirror.Vim;
@@ -35,5 +35,3 @@ const run = () => {
     }
   });
 };
-
-run();

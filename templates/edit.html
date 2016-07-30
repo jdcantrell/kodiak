@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block body_class %}edit{% endblock %}
+{% block content %}
+<div class="toolbar">
+  Various info and tools will be here
+</div>
+<div class="columns">
+  <textarea class="editor" id="ace_editor">{{ data }}</textarea>
+  <iframe src="/edit/{{ id }}/preview/" name="preview_frame" id="preview" class="preview"></iframe>
+</div>
+<form id="preview_form" action="/edit/{{ id }}/save/" method="post" target="preview_frame">
+  <input id="rst" name="rst" type="hidden" value="" />
+  <input id="preview_width" name="preview_width" type="hidden" value="" />
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/js/kodiak.js"></script>
+{% endblock %}

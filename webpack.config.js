@@ -4,7 +4,7 @@ module.exports = {
   devtool: 'source-map',
   entry: './src/main',
   output: {
-    path: './dist',
+    path: './static/js/',
     filename: 'kodiak.js'
   },
   module: {

@@ -11,9 +11,7 @@
   "author": "JD Cantrell",
   "license": "GPL-3.0",
   "dependencies": {
-    "@cycle/core": "^6.0.3",
-    "@cycle/dom": "^9.2.2",
-    "rx": "^4.1.0"
+    "ace-builds": "^1.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",
