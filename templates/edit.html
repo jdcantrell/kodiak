@@ -3,7 +3,14 @@
 {% block body_class %}edit{% endblock %}
 {% block content %}
 <div class="toolbar">
-  Various info and tools will be here
+  <button>Public</button>
+  <button>Private</button>
+  <button>Limited</button>
+  Last Saved: never
+  <button>Preview</button>
+  <button>Publish</button>
+  <button>Unpublish</button>
+  <button>Delete</button>
 </div>
 <div class="columns">
   <textarea class="editor" id="ace_editor">{{ data }}</textarea>
