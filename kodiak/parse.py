@@ -14,4 +14,10 @@ class Parser:
         self.html_writer.translator_class = Translator
 
     def parse(self, rst_string):
-        return  docutils.core.publish_string(source=rst_string, writer=self.html_writer)
+        doctree = docutils.core.publish_doctree(source=rst_string)
+
+        #remove docinfo and fields
+        return docutils.core.publish_from_doctree(doctree, writer=self.html_writer)
+
+
+

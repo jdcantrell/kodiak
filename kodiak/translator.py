@@ -1,5 +1,7 @@
 from docutils.writers.html4css1 import HTMLTranslator
+from docutils.nodes import date, field
 import config
+from flask import render_template
 
 class Translator(HTMLTranslator):
 
@@ -36,3 +38,27 @@ class Translator(HTMLTranslator):
             node['uri'] = '%s%s' % (config.image.web_path, node['uri']);
         return HTMLTranslator.visit_image(self, node)
 
+    def visit_docinfo(self, node):
+        self.body.append(self.starttag(node, 'div', ''))
+
+        # convert node into a dictionary of metadata
+        metadata = {}
+        for data in node.children:
+            print "child\n"
+            print data
+            if isinstance(data, date):
+                metadata[u'date'] = data.astext()
+            if isinstance(data, field):
+                key = data.children[0].astext()
+                value = data.children[1].astext()
+                metadata[key] = value
+
+        html = render_template('metadata.html', **metadata)
+
+
+        #Stop processing this node since we handle it in a template
+        node.children = []
+        self.body.append(html)
+
+    def depart_docinfo(self, node):
+        self.body.append('</div>')

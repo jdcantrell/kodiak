@@ -1,22 +1,49 @@
 {% extends "base.html" %}
 
+{% block head_tags %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.1.2/css/bulma.css">
+{% endblock %}
 {% block body_class %}edit{% endblock %}
 {% block content %}
+<div id="dropTarget" class="dropTarget">
+  <div>Drop images to begin uploading</div>
+</div>
 <div class="toolbar">
-  <button>Public</button>
-  <button>Private</button>
-  <button>Limited</button>
-  Last Saved: never
-  <button>Preview</button>
-  <button>Publish</button>
-  <button>Unpublish</button>
-  <button>Delete</button>
+  <nav class="level">
+    <div class="level-left">
+      <div class="level-item">
+        <a class="navbar-brand" href="#">Kodiak</a>
+      </div>
+      <div class="level-item">
+        <div class="control has-addons" >
+          <button type="button" class="button">Public</button>
+          <button type="button" class="button is-primary">Limited</button>
+          <button type="button" class="button">Private</button>
+        </div>
+      </div>
+      <div class="level-item">
+        Last Saved: never
+      </div>
+    </div>
+    <div class="level-right">
+      <div class="level-item">
+        <span id="upload_file">P12345.png</span>
+      </div>
+      <div class="level-item">
+        <progress id="progress" class="progress is-small" value="15" max="100">
+      </div>
+      <div class="level-item">
+        <button type="button" class="button is-success">Publish</button>
+      </div>
+    </div>
+  </nav>
 </div>
-<div class="columns">
+
+<div class="edit-columns">
   <textarea class="editor" id="ace_editor">{{ data }}</textarea>
-  <iframe src="/edit/{{ id }}/preview/" name="preview_frame" id="preview" class="preview"></iframe>
+  <iframe src="/kodiak/edit/{{ id }}/preview/" name="preview_frame" id="preview" class="preview"></iframe>
 </div>
-<form id="preview_form" action="/edit/{{ id }}/save/" method="post" target="preview_frame">
+<form id="preview_form" action="/kodiak/edit/{{ id }}/save/" method="post" target="preview_frame">
   <input id="rst" name="rst" type="hidden" value="" />
   <input id="preview_width" name="preview_width" type="hidden" value="" />
 </form>
