@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Edit</title>
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/fantasque-sans-mono" type="text/css"/>
-    <link rel="stylesheet" href="/static/css/kodiak.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.1.2/css/bulma.css">
     {% block head_tags %}{% endblock %}
   </head>
   <body class="{% block body_class %}{% endblock %}">

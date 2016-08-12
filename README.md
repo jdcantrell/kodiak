@@ -1,7 +1,8 @@
 #Kodiak - a personal photo blog/sharing tool
 
 Todo:
-- flask-user-login
+- grab title information from rst
+- finish actual theme
 - Clicking on an image in preview should bring it up in a lightbox full
   screen and display the alt text. Users should be able to use arrows to
   view the new and previous images for all other images on the page.
@@ -15,6 +16,8 @@ Todo:
 - ux for publish but not latest
 - Don't add two new lines between consecutive .. image:: tags
 - make .. images:: support multiline .. image:: docinfo tags
+- use a translator to create images the actual html size? We'd then have
+  a preview writer and a publish writer, this seems pretty reasonable
 
 Done:
 - Resize thumbnails on preview page instead of using full images
@@ -27,6 +30,7 @@ Done:
   time.
 - fix publishing button
 - Facebook/twitter microtags
+- flask-user-login
 
 #Setup
 

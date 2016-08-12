@@ -1,9 +1,11 @@
 from sqlalchemy import (
-    event, Column, Integer, String, DateTime, UnicodeText, Enum
+    event, Column, Integer, String, DateTime, UnicodeText, Enum, Text
 )
 from datetime import datetime
 
 from shortid import ShortId
+
+from werkzeug.security import generate_password_hash
 
 from kodiak.database import Base
 
@@ -25,6 +27,7 @@ class Page(Timestamp, Base):
     access = Column(Enum('private', 'public', 'limited'))
     data = Column(UnicodeText())
     slug = Column(UnicodeText())
+    title = Column(UnicodeText())
     published = Column(DateTime)
 
     def __init__(self, data, access='limited'):
@@ -36,3 +39,30 @@ class Page(Timestamp, Base):
     def __repr__(self):
         return '<Page %r>' % (self.id)
 
+class User(Timestamp, Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    username = Column(String(120), unique=True)
+    password = Column(Text())
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = generate_password_hash(password)
+
+    def __repr__(self):
+        return '<User %r>' % (self.username)
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)

@@ -37,8 +37,8 @@ class OpenGraphTransform(Transform):
             self.document.insert(0, open_graph_tag('title', title_text))
 
         if len(image_nodes):
-            title_text = image_nodes[0].rawsource
-            self.document.insert(0, open_graph_tag('title', title_text))
+            image_text = image_nodes[0]['uri']
+            self.document.insert(0, open_graph_tag('image', image_text))
 
 
 class KodiakWriter(Writer):
