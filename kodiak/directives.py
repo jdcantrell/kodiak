@@ -1,34 +1,11 @@
 '''Example of a custom ReST directive in Python docutils'''
-from docutils.nodes import TextElement, Inline, image
+from docutils.nodes import image, Element
 from docutils.parsers.rst import Directive
 from PIL import Image
 import config
 
-class foo(Inline, TextElement):
-    '''This node class is a no-op -- just a fun way to define some parameters.
-    There are lots of base classes to choose from in `docutils.nodes`.
-
-    See examples in `docutils.nodes`
-    '''
-    pass
-
-class Foo(Directive):
-    '''This `Directive` class tells the ReST parser what to do with the text it
-    encounters -- parse the input, perhaps, and return a list of node objects.
-    Here, usage of a single required argument is shown.
-
-    See examples in docutils.parsers.rst.directives.*
-    '''
-    required_arguments = 1
-    optional_arguments = 0
-    has_content = True
-    def run(self):
-        thenode = foo(text=self.arguments[0])
-        return [thenode]
-
 def size_image(filename, width, height, attributes):
-    uri = '%s%s' % (config.image.web_path, filename)
-    attributes['uri'] = uri
+    attributes['uri'] = filename
     attributes['rawsource']=filename
     img = image(**attributes)
     img['width'] = '%f' % width
@@ -42,12 +19,14 @@ def size_row(row, new_height):
         new_row.append(img)
     return new_row
 
+class images_group(Element):
+    pass
 
 class Images(Directive):
 
     max_width = config.theme.max_width
     target_height = config.theme.target_thumb_height
-    image_path = config.image.path
+    image_path = config.image.thumb_path
 
     has_content = True
     def run(self):
@@ -85,4 +64,6 @@ class Images(Directive):
             rows.append(current_row)
 
 
-        return [j for i in rows for j in i]
+        all_images = [j for i in rows for j in i]
+
+        return [images_group('', *all_images)]

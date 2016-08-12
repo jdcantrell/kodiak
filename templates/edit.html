@@ -11,9 +11,7 @@
 <div class="toolbar">
   <nav class="level">
     <div class="level-left">
-      <div class="level-item">
-        <a class="navbar-brand" href="#">Kodiak</a>
-      </div>
+      <!--
       <div class="level-item">
         <div class="control has-addons" >
           <button type="button" class="button">Public</button>
@@ -21,19 +19,22 @@
           <button type="button" class="button">Private</button>
         </div>
       </div>
+      -->
       <div class="level-item">
-        Last Saved: never
+        Saved: <span class="tag is-info" id="last_saved">{{ last_saved }}</span>
+      </div>
+      <div class="level-item">
+        Published: <span class="tag is-success" id="published_date">{{ published_date }}</span>
       </div>
     </div>
     <div class="level-right">
-      <div class="level-item">
-        <span id="upload_file">P12345.png</span>
+      <div id="uploading" class="level-item" style="display: none">
+        <span id="upload_text"></span>
+        <progress id="progress" class="progress is-small" value="0" max="100">
       </div>
       <div class="level-item">
-        <progress id="progress" class="progress is-small" value="15" max="100">
-      </div>
-      <div class="level-item">
-        <button type="button" class="button is-success">Publish</button>
+        <a href="preview/" target="preview" class="button is-link">Preview</a>
+        <button id="publish" type="button" class="button is-success">Publish</button>
       </div>
     </div>
   </nav>

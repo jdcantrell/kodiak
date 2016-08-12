@@ -21,22 +21,36 @@ const hideDropTarget = () => {
 };
 
 const updateProgress = (percentage) => {
-  document.getElementById('upload_progress').innerHTML = `${percentage}%`;
+  document.getElementById('progress').value = `${percentage}`;
 };
 
 const fileQueue = [];
 const uploadNext = () => {
   if (fileQueue.length) {
+    document.getElementById('uploading').style.display = 'block';
     const file = fileQueue.shift();
     const statusText = document.getElementById('upload_text');
-    document.getElementById('upload_file').innerHTML = file.name;
+    let status = file.name;
     if (fileQueue.length) {
-      statusText.innerHTML = `(${fileQueue.length} remaining)`;
-    } else {
-      statusText.innerHTML = '';
+      status = `${status} (${fileQueue.length})`;
     }
+    statusText.innerHTML = status;
     uploadFile(file);
+  } else {
+    document.getElementById('uploading').style.display = 'none';
   }
+};
+
+
+const addImage = (data) => {
+  const session = editor.session;
+  const text = `\n\n.. image:: ${data.name}`;
+
+  session.insert({
+    row: session.getLength(),
+    column: 0
+  }, text);
+  preview();
 };
 
 const uploadFile = (file) => {
@@ -56,12 +70,7 @@ const uploadFile = (file) => {
         if (xhr.responseText !== '') {
           const data = JSON.parse(xhr.responseText);
           // add image to rst
-          const session = editor.session;
-          session.insert({
-            row: session.getLength(),
-            column: 0
-          }, `\n\n.. image:: ${data.name}`);
-          preview();
+          addImage(data);
         }
       }
     }
@@ -96,9 +105,10 @@ const run = () => {
   window.setInterval(() => preview(), 5000);
 
   previewFrame.addEventListener('load', () => {
-    const scale = (previewFrame.offsetWidth - 10) / 820;
+    const scale = (previewFrame.offsetWidth - 10) / 1020;
     if (scale < 1) {
       previewFrame.contentDocument.body.style.transform = `scale(${scale})`;
+      document.getElementById('last_saved').innerHTML = previewFrame.contentDocument.getElementById('last_saved').value;
     }
   });
 
@@ -129,6 +139,15 @@ const run = () => {
       const file = files[i];
       addFile(file);
     }
+  });
+
+  // click handlers
+  const publishBtn = document.getElementById('publish');
+  publishBtn.addEventListener('click', () => {
+    publishBtn.classList.add('is-loading');
+    fetch('publish/', { credentials: 'same-origin' }).then(
+      () => { publishBtn.classList.remove('is-loading'); }
+    );
   });
 
 };

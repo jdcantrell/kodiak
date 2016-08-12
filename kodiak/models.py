@@ -24,6 +24,8 @@ class Page(Timestamp, Base):
     key = Column(String(16))
     access = Column(Enum('private', 'public', 'limited'))
     data = Column(UnicodeText())
+    slug = Column(UnicodeText())
+    published = Column(DateTime)
 
     def __init__(self, data, access='limited'):
         self.data = data

@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+import sys, os
+from datetime import datetime
+from PIL import Image
+
+from flask import Flask, render_template, render_template_string, request, redirect, url_for, jsonify
 from werkzeug import secure_filename
+
 from kodiak.parse import Parser
 from kodiak.database import db_session
 from kodiak.models import Page
-import sys, os
 import kodiak.config
 
 app = Flask(__name__)
@@ -18,7 +22,18 @@ def new_page():
 @app.route("/kodiak/edit/<id>/")
 def edit_page(id):
     record = db_session.query(Page).get(id)
-    return render_template('edit.html', id=record.id, data=record.data)
+    last_saved = record.updated.strftime('%B %d, %Y at %I:%M%p')
+    if record.published is not None:
+        published_date = record.published.strftime('%B %d, %Y at %I:%M%p')
+    else:
+        published_date = 'Never';
+    return render_template(
+        'edit.html',
+        id=record.id,
+        data=record.data,
+        last_saved=last_saved,
+        published_date=published_date
+    )
 
 @app.route("/kodiak/edit/<id>/save/", methods=["POST"])
 def save(id):
@@ -34,14 +49,17 @@ def preview(id):
     record = db_session.query(Page).get(id)
     if record is not None:
         parser = Parser()
-        return parser.parse(record.data)
+        html = parser.parse(record.data)
+        html = html.replace('</body>', '{{ post_body|safe }}</body>')
+
+        last_saved = record.updated.strftime('%B %d, %Y at %I:%M%p')
+        post_body = render_template('preview_post_body.html', last_saved=last_saved)
+        return render_template_string(html, post_body=post_body),
     return render_template('empty_preview.html')
 
 @app.route("/kodiak/edit/<id>/publish/", methods=['GET'])
 def publish(id):
     record = db_session.query(Page).get(id)
-    print record
-    print record.data
     if record is not None:
         parser = Parser()
         html = parser.parse(record.data)
@@ -58,15 +76,28 @@ def publish(id):
             fh.write(html)
 
         # set published date
-        return 'Published'
+        record.published = datetime.now()
+        db_session.add(record)
+        db_session.commit()
+        return jsonify(published=record.published.strftime('%B %d, %Y at %I:%M%p'))
 
-    return 'not found'
+    return jsonify(error=True, message="Not found")
 
 @app.route("/kodiak/upload/", methods=['POST'])
 def upload():
     file = request.files['file']
     filename = secure_filename(file.filename)
-    file.save(os.path.join(kodiak.config.image.path, filename))
+    with Image.open(file) as im:
+        width, height = im.size
+        if width > kodiak.config.image.max_size['width'] or height > kodiak.config.image.max_size['height']:
+            im.thumbnail((kodiak.config.image.max_size['width'], kodiak.config.image.max_size['height']), Image.ANTIALIAS)
+            im.save('%s%s' % (kodiak.config.image.path, filename), "JPEG")
+
+    with Image.open(file) as im:
+        width, height = im.size
+        if width > kodiak.config.theme.max_width:
+            im.thumbnail((kodiak.config.theme.max_width, kodiak.config.theme.max_width * 2), Image.ANTIALIAS)
+            im.save('%s%s' % (kodiak.config.image.thumb_path, filename), "JPEG")
     return jsonify(name=filename)
 
 
