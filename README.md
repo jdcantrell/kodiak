@@ -2,20 +2,19 @@
 
 Todo:
 - flask-user-login
-- Handle static page publishing (should we auto generate or require a
-  publish button?) - How to indicate staleness?
 - Clicking on an image in preview should bring it up in a lightbox full
   screen and display the alt text. Users should be able to use arrows to
   view the new and previous images for all other images on the page.
-- ux for publish but not latest
-- Pages Index
-- Public/Private/Limited
-- RSS feed (multiple, public, limited, all)
-- Don't add two new lines between consecutive .. image:: tags
-- invalid rst handling, don't save, show error, show error warning
-- export theme width config values to js (for editing)
 - fix width calculation, it needs to account for padding that occurs
   between images
+- Pages Index
+- Improve rst error messaging and handling
+- export theme width config values to js (for editing)
+- RSS feed (multiple, public, limited, all)
+- Public/Private/Limited
+- ux for publish but not latest
+- Don't add two new lines between consecutive .. image:: tags
+- make .. images:: support multiline .. image:: docinfo tags
 
 Done:
 - Resize thumbnails on preview page instead of using full images

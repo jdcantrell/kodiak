@@ -112,6 +112,8 @@ class Translator(HTMLTranslator):
         atts['alt'] = node.get('alt', uri)
         if 'full_src' in node:
             atts['data-full-src'] = node['full_src']
+        if 'caption' in node:
+            atts['data-caption'] = node['caption']
         # image size
         if 'width' in node:
             atts['width'] = node['width']

@@ -1,6 +1,7 @@
 '''Example of a custom ReST directive in Python docutils'''
 from docutils.nodes import image, Element
-from docutils.parsers.rst import Directive
+from docutils.parsers.rst import Directive, directives
+from docutils.parsers.rst.directives import images
 from PIL import Image
 import config
 
@@ -21,6 +22,16 @@ def size_row(row, new_height):
 
 class images_group(Element):
     pass
+
+class KodiakImage(images.Image):
+    # add caption as part of our spec
+    option_spec = {'alt': directives.unchanged,
+                   'height': directives.length_or_unitless,
+                   'width': directives.length_or_percentage_or_unitless,
+                   'name': directives.unchanged,
+                   'target': directives.unchanged_required,
+                   'class': directives.class_option,
+                   'caption': directives.unchanged}
 
 class Images(Directive):
 
