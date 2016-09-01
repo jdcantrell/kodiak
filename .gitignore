@@ -7,3 +7,4 @@ static/js/kodiak.*
 static/uploads/
 .DS_Store
 published/*
+private/*

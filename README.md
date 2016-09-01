@@ -1,18 +1,16 @@
 #Kodiak - a personal photo blog/sharing tool
 
 Todo:
-- grab title information from rst
+- Public/Private/Limited
 - finish actual theme
 - Clicking on an image in preview should bring it up in a lightbox full
   screen and display the alt text. Users should be able to use arrows to
   view the new and previous images for all other images on the page.
 - fix width calculation, it needs to account for padding that occurs
   between images
-- Pages Index
 - Improve rst error messaging and handling
 - export theme width config values to js (for editing)
 - RSS feed (multiple, public, limited, all)
-- Public/Private/Limited
 - ux for publish but not latest
 - Don't add two new lines between consecutive .. image:: tags
 - make .. images:: support multiline .. image:: docinfo tags

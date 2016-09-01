@@ -3,7 +3,7 @@
 {% block title %}Edit Page{% endblock %}
 
 {% block head_tags %}
-  <link rel="stylesheet" href="/static/css/kodiak.css">
+  <link rel="stylesheet" href="/static/css/edit.css">
 {% endblock %}
 {% block body_class %}edit{% endblock %}
 {% block content %}
@@ -13,20 +13,12 @@
 <div class="toolbar">
   <nav class="level">
     <div class="level-left">
-      <!--
       <div class="level-item">
         <div class="control has-addons" >
-          <button type="button" class="button">Public</button>
-          <button type="button" class="button is-primary">Limited</button>
-          <button type="button" class="button">Private</button>
+          <button id='public' type="button" class="button {% if access == 'public' %}is-primary{% endif %}">Public</button>
+          <button id='limited' type="button" class="button {% if access == 'limited' %}is-primary{% endif %}">Limited</button>
+          <button id='private' type="button" class="button {% if access == 'private' %}is-primary{% endif %}">Private</button>
         </div>
-      </div>
-      -->
-      <div class="level-item">
-        Saved: <span class="tag is-info" id="last_saved">{{ last_saved }}</span>
-      </div>
-      <div class="level-item">
-        Published: <span class="tag is-success" id="published_date">{{ published_date }}</span>
       </div>
     </div>
     <div class="level-right">
@@ -43,11 +35,17 @@
 </div>
 
 <div class="edit-columns">
-  <textarea class="editor" id="ace_editor">{{ data }}</textarea>
+  <div class="editor-column">
+    <textarea class="editor" id="ace_editor">{{ data }}</textarea>
+    <div class="status">&nbsp;
+      <strong>Saved:</strong> <span id="last_saved">{{ last_saved }}</span>
+    </div>
+  </div>
   <iframe src="/kodiak/edit/{{ id }}/preview/" name="preview_frame" id="preview" class="preview"></iframe>
 </div>
 <form id="preview_form" action="/kodiak/edit/{{ id }}/save/" method="post" target="preview_frame">
   <input id="rst" name="rst" type="hidden" value="" />
+  <input id="access" name="access" type="hidden" value="{{ access }}" />
   <input id="preview_width" name="preview_width" type="hidden" value="" />
 </form>
 {% endblock %}

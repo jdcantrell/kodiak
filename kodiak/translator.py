@@ -57,7 +57,6 @@ class Translator(HTMLTranslator):
     doctype = ('<!DOCTYPE html >\n')
     head_prefix_template = ('<html>\n<head>\n')
     def __init__(self, document):
-        print 'gen'
         document.settings.embed_stylesheet = False
         document.settings.xml_declaration = False
         HTMLTranslator.__init__(self, document)
@@ -87,8 +86,6 @@ class Translator(HTMLTranslator):
         # convert node into a dictionary of metadata
         metadata = {}
         for data in node.children:
-            print "child\n"
-            print data
             if isinstance(data, date):
                 metadata[u'date'] = data.astext()
             if isinstance(data, field):
@@ -141,5 +138,5 @@ class Translator(HTMLTranslator):
         self.context.append('')
 
         def depart_image(self, node):
-            print "fuck?"
+            pass
 

@@ -6,7 +6,8 @@ class image:
     max_size = {'width': 1600, 'height': 1200 }
 
 class generate:
-    path = '/Users/jcantrell/Projects/kodiak/published/'
+    public_path = '/Users/jcantrell/Projects/kodiak/published/'
+    limited_path = '/Users/jcantrell/Projects/kodiak/private/'
 
 class theme:
     web_path = '/static/css/'

@@ -1,1 +1,53 @@
-<a href="new/">Create new</a>
+{% extends "base.html" %}
+{% block title %}All Pages{% endblock %}
+
+{% block content %}
+  <nav class="nav has-shadow">
+    <div class="container">
+      <div class="nav-left">
+        <a class="nav-item is-active is-tab" href="/kodiak/">All Pages</a>
+        <a class="nav-item is-tab" href="/kodiak/new/">New Page</a>
+      </div>
+      <div class="nav-right">
+        <a class="nav-item" href="/kodiak/logout/">Logout</a>
+      </div>
+    </div>
+  </nav>
+  <section class="section">
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Published</th>
+          <th>Updated</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for page in pages %}
+        <tr>
+          <td>{{ page.title }}</td>
+          {% if page.published %}
+            <td {% if page.published < page.updated %} class="notification is-warning" {% endif %}>
+              {{ page.published.strftime('%m/%d/%y at %I:%M%p') }}
+            </td>
+          {% else %}
+            <td>never</td>
+          {% endif %}
+          <td>{{ page.updated.strftime('%m/%d/%y at %I:%M%p') }}</td>
+          <td><a href="/kodiak/edit/{{ page.id }}/">Edit</a></td>
+
+          {% if page.published %}
+            <td><a href="/{{ page.view_url() }}">View</a></td>
+          {% else %}
+            <td></td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

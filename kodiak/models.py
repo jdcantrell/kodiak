@@ -30,6 +30,23 @@ class Page(Timestamp, Base):
     title = Column(UnicodeText())
     published = Column(DateTime)
 
+    def view_url(self):
+        if self.published is None:
+            return None
+
+        if self.slug is not None:
+            dir_name = self.slug
+        else:
+            dir_name = self.key
+
+        if self.access == 'public':
+            return dir_name
+        elif self.access == 'limited':
+            return '%s?key=%s' % (dir_name, self.key)
+        else:
+            return 'private/%s' % self.key
+
+
     def __init__(self, data, access='limited'):
         self.data = data
         self.access = access

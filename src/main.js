@@ -150,6 +150,24 @@ const run = () => {
     );
   });
 
+  const publicBtn = document.getElementById('public');
+  const limitedBtn = document.getElementById('limited');
+  const privateBtn = document.getElementById('private');
+
+  const accessField = document.getElementById('access');
+  const accessHandler = (event) => {
+    accessField.value = event.target.id;
+    publicBtn.classList.remove('is-primary');
+    privateBtn.classList.remove('is-primary');
+    limitedBtn.classList.remove('is-primary');
+    event.target.classList.add('is-primary');
+    document.getElementById('preview_form').submit();
+  };
+
+  publicBtn.addEventListener('click', accessHandler);
+  limitedBtn.addEventListener('click', accessHandler);
+  privateBtn.addEventListener('click', accessHandler);
+
 };
 
 run();
