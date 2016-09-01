@@ -1,7 +1,7 @@
 from sqlalchemy import (
     event, Column, Integer, String, DateTime, UnicodeText, Enum, Text
 )
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from shortid import ShortId
 
@@ -46,6 +46,14 @@ class Page(Timestamp, Base):
         else:
             return 'private/%s' % self.key
 
+    def is_outdated(self):
+        if self.published is None:
+            return True
+
+        if self.updated - self.published > timedelta(milliseconds=500):
+            return True
+
+        return False
 
     def __init__(self, data, access='limited'):
         self.data = data

@@ -55,7 +55,11 @@ def logout():
 def index():
     if current_user.is_authenticated:
         records = db_session.query(Page).all()
-        return render_template('index_authenticated.html', pages=records, current_user=current_user)
+        return render_template(
+            'index_authenticated.html',
+            pages=records,
+            current_user=current_user
+        )
     else:
         return render_template('index.html')
 

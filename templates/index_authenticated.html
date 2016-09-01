@@ -30,7 +30,7 @@
         <tr>
           <td>{{ page.title }}</td>
           {% if page.published %}
-            <td {% if page.published < page.updated %} class="notification is-warning" {% endif %}>
+            <td {% if page.is_outdated() %} class="notification is-warning" {% endif %}>
               {{ page.published.strftime('%m/%d/%y at %I:%M%p') }}
             </td>
           {% else %}
