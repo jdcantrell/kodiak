@@ -11,6 +11,7 @@ Todo:
 - ux for publish but not latest
 - Don't add two new lines between consecutive .. image:: tags
 - make .. images:: support multiline .. image:: docinfo tags
+- proper private support
 
 Done:
 - export theme width config values to js (for editing)
