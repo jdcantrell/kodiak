@@ -3,7 +3,7 @@ from docutils.nodes import image, Element
 from docutils.parsers.rst import Directive, directives
 from docutils.parsers.rst.directives import images
 from PIL import Image
-import config
+from config import config
 
 def size_image(filename, width, height, attributes):
     attributes['uri'] = filename
@@ -35,9 +35,9 @@ class KodiakImage(images.Image):
 
 class Images(Directive):
 
-    max_width = config.theme.max_width
-    target_height = config.theme.target_thumb_height
-    image_path = config.image.thumb_path
+    max_width = config['theme']['max_width']
+    target_height = config['theme']['target_thumb_height']
+    image_path = config['image']['thumb_path']
 
     has_content = True
     def run(self):

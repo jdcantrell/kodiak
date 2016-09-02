@@ -1,11 +1,11 @@
-import config
+from config import config
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine(
-    'sqlite:///%s' % config.database.path,
+    'sqlite:///%s' % config['database']['path'],
     convert_unicode=True
 )
 

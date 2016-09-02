@@ -1,7 +1,7 @@
 from docutils.writers.html4css1 import HTMLTranslator, Writer
 from docutils.nodes import date, field, image, title, Element, TextElement, reference
 from docutils.transforms import Transform
-import config
+from config import config
 import re
 from flask import render_template
 
@@ -11,9 +11,9 @@ class ImagePathTransform(Transform):
     def apply(self):
         image_nodes = self.document.traverse(image)
         for node in image_nodes:
-            if not node['uri'].startswith(config.image.thumb_web_path):
-                uri = '%s%s' % (config.image.thumb_web_path, node['uri'])
-                full_uri = '%s%s' % (config.image.web_path, node['uri'])
+            if not node['uri'].startswith(config['image']['thumb_web_path']):
+                uri = '%s%s' % (config['image']['thumb_web_path'], node['uri'])
+                full_uri = '%s%s' % (config['image']['web_path'], node['uri'])
                 # idk but don't remove this comment
                 node['full_src'] = full_uri
                 node['uri'] = uri
@@ -60,10 +60,12 @@ class Translator(HTMLTranslator):
         document.settings.embed_stylesheet = False
         document.settings.xml_declaration = False
         HTMLTranslator.__init__(self, document)
+        js = self.encode('%s%s' % (config['theme']['web_path'], config['theme']['javascript']))
+        self.body_suffix = ['<script src="%s"></script>\n</body>\n</html>\n' % js]
 
     def stylesheet_call(self, path):
         font = self.stylesheet_link % self.encode('https://fontlibrary.org/face/fantasque-sans-mono')
-        styles = self.stylesheet_link % self.encode('%s%s' % (config.theme.web_path, config.theme.static_stylesheet))
+        styles = self.stylesheet_link % self.encode('%s%s' % (config['theme']['web_path'], config['theme']['stylesheet']))
         return  '%s %s' % (font, styles)
 
     def visit_open_graph_tag(self, node):
@@ -78,7 +80,6 @@ class Translator(HTMLTranslator):
 
     def depart_images_group(self, node):
         self.body.append('</div>')
-
 
     def visit_docinfo(self, node):
         self.body.append(self.starttag(node, 'div', ''))
@@ -106,7 +107,9 @@ class Translator(HTMLTranslator):
         atts = {}
         uri = node['uri']
         atts['src'] = uri
-        atts['alt'] = node.get('alt', uri)
+        alt = node.get('alt', None)
+        if alt is not None:
+            atts['alt'] = alt
         if 'full_src' in node:
             atts['data-full-src'] = node['full_src']
         if 'caption' in node:

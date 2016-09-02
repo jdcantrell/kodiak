@@ -1,0 +1,4 @@
+stylesheet: simple.css
+javascript: simple.js
+max_width: 1000
+target_thumb_height: 250

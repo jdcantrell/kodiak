@@ -1,22 +1,24 @@
 var path = require('path');
 
 module.exports = {
-  devtool: 'source-map',
-  entry: './src/main',
+  entry: {
+    'static/js/edit': './src/edit',
+    'static/themes/simple/simple': './static/themes/simple/src/simple',
+  },
   output: {
-    path: './static/js/',
-    filename: 'kodiak.js'
+    path: './',
+    filename: '[name].js'
   },
   module: {
     loaders: [
       {
         test: /\.js?$/,
         loader: 'babel',
-        query: {
-          presets: ['es2015']
-        },
-        include: path.join(__dirname, 'src'),
-        explude: /node_modules/
+        include: [
+          path.join(__dirname, 'src'),
+          path.join(__dirname, 'static/themes'),
+        ],
+        exclude: /node_modules/
       }
     ]
   }

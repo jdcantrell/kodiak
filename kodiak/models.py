@@ -50,7 +50,8 @@ class Page(Timestamp, Base):
         if self.published is None:
             return True
 
-        if self.updated - self.published > timedelta(milliseconds=500):
+        print (self.updated - self.published)
+        if self.updated - self.published > timedelta(milliseconds=3000):
             return True
 
         return False

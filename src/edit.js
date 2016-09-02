@@ -105,9 +105,11 @@ const run = () => {
   window.setInterval(() => preview(), 5000);
 
   previewFrame.addEventListener('load', () => {
-    const scale = (previewFrame.offsetWidth - 10) / 1020;
+    const scale = (previewFrame.offsetWidth - 10) / window.theme_width;
     if (scale < 1) {
       previewFrame.contentDocument.body.style.transform = `scale(${scale})`;
+      previewFrame.contentDocument.body.style.minWidth = `${window.theme_width}px`;
+      previewFrame.contentDocument.body.style.transformOrigin = '0 0';
       document.getElementById('last_saved').innerHTML = previewFrame.contentDocument.getElementById('last_saved').value;
     }
   });

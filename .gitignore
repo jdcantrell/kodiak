@@ -3,8 +3,9 @@ node_modules
 dist/
 *.sql
 *.pyc
-static/js/kodiak.*
+*.js.map
 static/uploads/
 .DS_Store
 published/*
 private/*
+config.yml

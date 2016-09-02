@@ -1,0 +1,26 @@
+# Modify this file and then copy to config.yml
+image:
+  web_path: /static/uploads/
+  path: ./static/uploads/
+  thumb_path: ./static/uploads/thumbs/
+  thumb_web_path: /static/uploads/thumbs/
+  max_size:
+    width: 1600
+    height: 1200
+
+generate:
+  public_path: ./published/
+  limited_path: ./private/
+
+theme:
+  theme_dir: ./static/themes/simple
+  web_path: /static/themes/simple/
+
+database:
+  path: ./kodiak.sql
+
+# Generate a secret key:
+# >>> import os
+# >>> os.urandom(24)
+# copy output below
+secret_key: fluffy_secret

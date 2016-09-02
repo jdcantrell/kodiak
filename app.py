@@ -1,5 +1,14 @@
 import sys, os, time
 from datetime import datetime
+
+from kodiak.config import load_config
+
+if not os.path.exists('./config.yml'):
+    print "No config file found!"
+    print "Please look at config.example.yml"
+    sys.exit(1)
+config = load_config('./config.yml');
+
 from PIL import Image
 
 from flask import Flask, render_template, render_template_string, request, redirect, url_for, jsonify, send_from_directory
@@ -12,10 +21,9 @@ from werkzeug.security import check_password_hash
 from kodiak.parse import Parser, extract_info
 from kodiak.database import db_session
 from kodiak.models import Page, User
-import kodiak.config
 
 app = Flask(__name__)
-app.secret_key = 'fluffy'
+app.secret_key = config['secret_key']
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -90,7 +98,8 @@ def edit_page(id):
         data=record.data,
         access=record.access,
         last_saved=last_saved,
-        published_date=published_date
+        published_date=published_date,
+        theme_width=(config['theme']['max_width'] + 20)
     )
 
 @app.route("/kodiak/edit/<id>/save/", methods=["POST"])
@@ -140,10 +149,10 @@ def publish(id):
             dir_name = record.key
 
         if record.access == 'public':
-            file_path = '%s%s' % (kodiak.config.generate.public_path, dir_name)
+            file_path = '%s%s' % (config['generate']['public_path'], dir_name)
             url = dir_name
         elif record.access == 'limited':
-            file_path = '%s%s' % (kodiak.config.generate.limited_path, dir_name)
+            file_path = '%s%s' % (config['generate']['limited_path'], dir_name)
             url = '%s?key=%s' % (dir_name, record.key)
         else:
             # access is private so do nothing
@@ -174,15 +183,13 @@ def upload():
     filename = secure_filename(file.filename)
     with Image.open(file) as im:
         width, height = im.size
-        if width > kodiak.config.image.max_size['width'] or height > kodiak.config.image.max_size['height']:
-            im.thumbnail((kodiak.config.image.max_size['width'], kodiak.config.image.max_size['height']), Image.ANTIALIAS)
-            im.save('%s%s' % (kodiak.config.image.path, filename), "JPEG")
+        if width > config['image']['max_size']['width'] or height > config['image']['max_size']['height']:
+            im.thumbnail((config['image']['max_size']['width'], config['image']['max_size']['height']), Image.ANTIALIAS)
+            im.save('%s%s' % (config['image']['path'], filename), "JPEG")
 
-    with Image.open(file) as im:
-        width, height = im.size
-        if width > kodiak.config.theme.max_width:
-            im.thumbnail((kodiak.config.theme.max_width, kodiak.config.theme.max_width * 2), Image.ANTIALIAS)
-            im.save('%s%s' % (kodiak.config.image.thumb_path, filename), "JPEG")
+        if width > config['theme']['max_width']:
+            im.thumbnail((config['theme']['max_width'], config['theme']['max_width'] * 2), Image.ANTIALIAS)
+            im.save('%s%s' % (config['image']['thumb_path'], filename), "JPEG")
     return jsonify(name=filename)
 
 @app.route("/<slug>/", methods=['GET'])
