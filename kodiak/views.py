@@ -57,7 +57,9 @@ def index():
         return render_template(
             'index_authenticated.html',
             pages=records,
-            current_user=current_user
+            current_user=current_user,
+            web_path=config['app']['web_path'],
+            static_web_path=config['app']['static_web_path'],
         )
     else:
         return render_template('index.html')
@@ -90,7 +92,9 @@ def edit_page(id):
         access=record.access,
         last_saved=last_saved,
         published_date=published_date,
-        theme_width=(config['theme']['max_width'] + 20)
+        theme_width=(config['theme']['max_width'] + 20),
+        web_path=config['app']['web_path'],
+        static_web_path=config['app']['static_web_path'],
     )
 
 @app.route("/kodiak/edit/<id>/save/", methods=["POST"])

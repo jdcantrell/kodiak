@@ -3,7 +3,7 @@
 {% block title %}Edit Page{% endblock %}
 
 {% block head_tags %}
-  <link rel="stylesheet" href="/static/css/edit.css">
+  <link rel="stylesheet" href="{{ static_web_path }}css/edit.css">
 {% endblock %}
 {% block body_class %}edit{% endblock %}
 {% block content %}
@@ -41,9 +41,9 @@
       <strong>Saved:</strong> <span id="last_saved">{{ last_saved }}</span>
     </div>
   </div>
-  <iframe src="/kodiak/edit/{{ id }}/preview/" name="preview_frame" id="preview" class="preview"></iframe>
+  <iframe src="{{ web_path }}kodiak/edit/{{ id }}/preview/" name="preview_frame" id="preview" class="preview"></iframe>
 </div>
-<form id="preview_form" action="/kodiak/edit/{{ id }}/save/" method="post" target="preview_frame">
+<form id="preview_form" action="{{ web_path }}kodiak/edit/{{ id }}/save/" method="post" target="preview_frame">
   <input id="rst" name="rst" type="hidden" value="" />
   <input id="access" name="access" type="hidden" value="{{ access }}" />
   <input id="preview_width" name="preview_width" type="hidden" value="" />
@@ -52,8 +52,9 @@
 
 {% block scripts %}
 <script>
-  theme_width = {{ theme_width }}
+  theme_width = {{ theme_width }};
+  upload_path = '{{ web_path }}upload/';
 </script>
-<script src="/static/js/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="/static/js/edit.js"></script>
+<script src="{{ static_web_path }}js/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ static_web_path }}js/edit.js"></script>
 {% endblock %}

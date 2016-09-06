@@ -78,7 +78,7 @@ const uploadFile = (file) => {
 
   const data = new FormData();
   data.append('file', file);
-  xhr.open('POST', '/kodiak/upload/');
+  xhr.open('POST', upload_path);
   xhr.send(data);
 };
 

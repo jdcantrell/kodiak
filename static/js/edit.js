@@ -1,1 +1,225 @@
-!function(e){function t(d){if(n[d])return n[d].exports;var a=n[d]={exports:{},id:d,loaded:!1};return e[d].call(a.exports,a,a.exports,t),a.loaded=!0,a.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t){"use strict";var n=void 0,d=document.getElementById("preview"),a=document.getElementById("dropTarget"),o=function(e){var t=document.getElementById("rst"),d=n.getValue();(e||t.value!==d)&&(document.getElementById("rst").value=d,document.getElementById("preview_form").submit())},i=function(){a.style.display="flex"},r=function(){a.style.display="none"},s=function(e){document.getElementById("progress").value=""+e},c=[],l=function(){if(c.length){document.getElementById("uploading").style.display="block";var e=c.shift(),t=document.getElementById("upload_text"),n=e.name;c.length&&(n=n+" ("+c.length+")"),t.innerHTML=n,m(e)}else document.getElementById("uploading").style.display="none"},u=function(e){var t=n.session,d="\n\n.. image:: "+e.name;t.insert({row:t.getLength(),column:0},d),o()},m=function(e){var t=new XMLHttpRequest;t.upload.addEventListener("progress",function(e){if(e.lengthComputable){var t=Math.round(100*e.loaded/e.total);s(t)}},!1),t.onreadystatechange=function(){if(4===t.readyState&&(t.status>=200&&t.status<=200||304===t.status)&&(l(),""!==t.responseText)){var e=JSON.parse(t.responseText);u(e)}};var n=new FormData;n.append("file",e),t.open("POST","/kodiak/upload/"),t.send(n)},v=function(e){c.push(e),l()},g=function(){ace.config.loadModule("ace/keybinding/vim",function(){var e=ace.require("ace/keyboard/vim").CodeMirror.Vim;e.defineEx("write","w",function(e){e.ace.execCommand("save"),o(!0)})}),n=ace.edit("ace_editor"),n.setTheme("ace/theme/tomorrow"),n.setOption("wrap",80),n.getSession().setMode("ace/mode/rst"),n.setKeyboardHandler("ace/keyboard/vim"),window.setInterval(function(){return o()},5e3),d.addEventListener("load",function(){var e=(d.offsetWidth-10)/window.theme_width;e<1&&(d.contentDocument.body.style.transform="scale("+e+")",d.contentDocument.body.style.minWidth=window.theme_width+"px",d.contentDocument.body.style.transformOrigin="0 0",document.getElementById("last_saved").innerHTML=d.contentDocument.getElementById("last_saved").value)}),document.body.addEventListener("dragover",function(){i()});var e=function(e){e.preventDefault(),e.stopPropagation()};a.addEventListener("dragleave",function(t){e(t),r()}),a.addEventListener("drag",e),a.addEventListener("dragstart",e),a.addEventListener("dragend",e),a.addEventListener("dragover",e,!0),a.addEventListener("dragenter",e),a.addEventListener("drop",function(t){e(t),r();for(var n=t.dataTransfer.files,d=0;d<n.length;d++){var a=n[d];v(a)}});var t=document.getElementById("publish");t.addEventListener("click",function(){t.classList.add("is-loading"),fetch("publish/",{credentials:"same-origin"}).then(function(){t.classList.remove("is-loading")})});var s=document.getElementById("public"),c=document.getElementById("limited"),l=document.getElementById("private"),u=document.getElementById("access"),m=function(e){u.value=e.target.id,s.classList.remove("is-primary"),l.classList.remove("is-primary"),c.classList.remove("is-primary"),e.target.classList.add("is-primary"),document.getElementById("preview_form").submit()};s.addEventListener("click",m),c.addEventListener("click",m),l.addEventListener("click",m)};g()}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/* globals ace */
+	var editor = void 0;
+
+	var previewFrame = document.getElementById('preview');
+	var dropTarget = document.getElementById('dropTarget');
+
+	var preview = function preview(force) {
+	  var input = document.getElementById('rst');
+	  var editorValue = editor.getValue();
+	  if (force || input.value !== editorValue) {
+	    document.getElementById('rst').value = editorValue;
+	    document.getElementById('preview_form').submit();
+	  }
+	};
+
+	var showDropTarget = function showDropTarget() {
+	  dropTarget.style.display = 'flex';
+	};
+	var hideDropTarget = function hideDropTarget() {
+	  dropTarget.style.display = 'none';
+	};
+
+	var updateProgress = function updateProgress(percentage) {
+	  document.getElementById('progress').value = '' + percentage;
+	};
+
+	var fileQueue = [];
+	var uploadNext = function uploadNext() {
+	  if (fileQueue.length) {
+	    document.getElementById('uploading').style.display = 'block';
+	    var file = fileQueue.shift();
+	    var statusText = document.getElementById('upload_text');
+	    var status = file.name;
+	    if (fileQueue.length) {
+	      status = status + ' (' + fileQueue.length + ')';
+	    }
+	    statusText.innerHTML = status;
+	    uploadFile(file);
+	  } else {
+	    document.getElementById('uploading').style.display = 'none';
+	  }
+	};
+
+	var addImage = function addImage(data) {
+	  var session = editor.session;
+	  var text = '\n\n.. image:: ' + data.name;
+
+	  session.insert({
+	    row: session.getLength(),
+	    column: 0
+	  }, text);
+	  preview();
+	};
+
+	var uploadFile = function uploadFile(file) {
+	  var xhr = new XMLHttpRequest();
+
+	  xhr.upload.addEventListener('progress', function (e) {
+	    if (e.lengthComputable) {
+	      var percentage = Math.round(e.loaded * 100 / e.total);
+	      updateProgress(percentage);
+	    }
+	  }, false);
+
+	  xhr.onreadystatechange = function () {
+	    if (xhr.readyState === 4) {
+	      if (xhr.status >= 200 && xhr.status <= 200 || xhr.status === 304) {
+	        uploadNext();
+	        if (xhr.responseText !== '') {
+	          var _data = JSON.parse(xhr.responseText);
+	          // add image to rst
+	          addImage(_data);
+	        }
+	      }
+	    }
+	  };
+
+	  var data = new FormData();
+	  data.append('file', file);
+	  xhr.open('POST', upload_path);
+	  xhr.send(data);
+	};
+
+	var addFile = function addFile(file) {
+	  fileQueue.push(file);
+	  uploadNext();
+	};
+
+	var run = function run() {
+	  ace.config.loadModule('ace/keybinding/vim', function () {
+	    var VimApi = ace.require('ace/keyboard/vim').CodeMirror.Vim;
+	    VimApi.defineEx('write', 'w', function (cm) {
+	      cm.ace.execCommand('save');
+	      preview(true);
+	    });
+	  });
+	  editor = ace.edit('ace_editor');
+	  editor.setTheme('ace/theme/tomorrow');
+	  editor.setOption('wrap', 80);
+	  editor.getSession().setMode('ace/mode/rst');
+	  editor.setKeyboardHandler('ace/keyboard/vim');
+
+	  window.setInterval(function () {
+	    return preview();
+	  }, 5000);
+
+	  previewFrame.addEventListener('load', function () {
+	    var scale = (previewFrame.offsetWidth - 10) / window.theme_width;
+	    if (scale < 1) {
+	      previewFrame.contentDocument.body.style.transform = 'scale(' + scale + ')';
+	      previewFrame.contentDocument.body.style.minWidth = window.theme_width + 'px';
+	      previewFrame.contentDocument.body.style.transformOrigin = '0 0';
+	      document.getElementById('last_saved').innerHTML = previewFrame.contentDocument.getElementById('last_saved').value;
+	    }
+	  });
+
+	  document.body.addEventListener('dragover', function () {
+	    showDropTarget();
+	  });
+
+	  var preventDefault = function preventDefault(e) {
+	    e.preventDefault();
+	    e.stopPropagation();
+	  };
+
+	  dropTarget.addEventListener('dragleave', function (e) {
+	    preventDefault(e);
+	    hideDropTarget();
+	  });
+
+	  dropTarget.addEventListener('drag', preventDefault);
+	  dropTarget.addEventListener('dragstart', preventDefault);
+	  dropTarget.addEventListener('dragend', preventDefault);
+	  dropTarget.addEventListener('dragover', preventDefault, true);
+	  dropTarget.addEventListener('dragenter', preventDefault);
+	  dropTarget.addEventListener('drop', function (e) {
+	    preventDefault(e);
+	    hideDropTarget();
+	    var files = e.dataTransfer.files;
+	    for (var i = 0; i < files.length; i++) {
+	      var file = files[i];
+	      addFile(file);
+	    }
+	  });
+
+	  // click handlers
+	  var publishBtn = document.getElementById('publish');
+	  publishBtn.addEventListener('click', function () {
+	    publishBtn.classList.add('is-loading');
+	    fetch('publish/', { credentials: 'same-origin' }).then(function () {
+	      publishBtn.classList.remove('is-loading');
+	    });
+	  });
+
+	  var publicBtn = document.getElementById('public');
+	  var limitedBtn = document.getElementById('limited');
+	  var privateBtn = document.getElementById('private');
+
+	  var accessField = document.getElementById('access');
+	  var accessHandler = function accessHandler(event) {
+	    accessField.value = event.target.id;
+	    publicBtn.classList.remove('is-primary');
+	    privateBtn.classList.remove('is-primary');
+	    limitedBtn.classList.remove('is-primary');
+	    event.target.classList.add('is-primary');
+	    document.getElementById('preview_form').submit();
+	  };
+
+	  publicBtn.addEventListener('click', accessHandler);
+	  limitedBtn.addEventListener('click', accessHandler);
+	  privateBtn.addEventListener('click', accessHandler);
+	};
+
+	run();
+
+/***/ }
+/******/ ]);

@@ -9,8 +9,8 @@ image:
     height: 1200
 
 generate:
-  public_path: ./published/
-  limited_path: ./private/
+  public_web_path: /published/
+  limited_web_path: /private/
 
 theme:
   theme_dir: ./static/themes/simple
@@ -18,6 +18,10 @@ theme:
 
 database:
   path: ./kodiak.sql
+
+app:
+  static_web_path: /static/
+  web_path: /
 
 # Generate a secret key:
 # >>> import os

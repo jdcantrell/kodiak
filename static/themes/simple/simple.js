@@ -1,1 +1,106 @@
-!function(e){function t(n){if(d[n])return d[n].exports;var a=d[n]={exports:{},id:n,loaded:!1};return e[n].call(a.exports,a,a.exports,t),a.loaded=!0,a.exports}var d={};return t.m=e,t.c=d,t.p="",t(0)}([function(e,t){"use strict";var d=[].slice.call(document.querySelectorAll(".document img")),n=document.createElement("div");n.innerHTML='<div class="modalClose">&times;</div><div class="modalContent"><img id="modalImage"><div id="modalCaption" class="modalCaption"></div></div>',n.classList.add("modal","is-hidden"),document.body.append(n);var a=function(e){var t=e;t>=d.length?t=0:t<0&&(t=d.length-1);var a=d[t].dataset.fullSrc;document.getElementById("modalImage").src=a;var i=d[t].getAttribute("alt");i?(document.getElementById("modalCaption").innerHTML=i,document.getElementById("modalCaption").classList.remove("is-hidden")):document.getElementById("modalCaption").classList.add("is-hidden"),n.classList.remove("is-hidden"),n.dataset.imgIdx=t};document.body.addEventListener("keydown",function(e){"Escape"===e.key&&n.classList.add("is-hidden"),"ArrowRight"===e.key&&a(parseInt(n.dataset.imgIdx,10)+1),"ArrowLeft"===e.key&&a(parseInt(n.dataset.imgIdx,10)-1)}),n.addEventListener("click",function(){n.classList.add("is-hidden")});var i=function(e){return function(){return a(e)}};d.forEach(function(e,t){e.addEventListener("click",i(t))})}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var imgs = [].slice.call(document.querySelectorAll('.document img'));
+
+	// create modal
+	var modal = document.createElement('div');
+	modal.innerHTML = '<div class="modalClose">&times;</div><div class="modalContent"><img id="modalImage"><div id="modalCaption" class="modalCaption"></div></div>';
+	modal.classList.add('modal', 'is-hidden');
+	document.body.append(modal);
+
+	var displayImage = function displayImage(index) {
+	  var idx = index;
+	  if (idx >= imgs.length) {
+	    idx = 0;
+	  } else if (idx < 0) {
+	    idx = imgs.length - 1;
+	  }
+
+	  var fullSrc = imgs[idx].dataset.fullSrc;
+	  document.getElementById('modalImage').src = fullSrc;
+	  var caption = imgs[idx].getAttribute('alt');
+	  if (caption) {
+	    document.getElementById('modalCaption').innerHTML = caption;
+	    document.getElementById('modalCaption').classList.remove('is-hidden');
+	  } else {
+	    document.getElementById('modalCaption').classList.add('is-hidden');
+	  }
+	  modal.classList.remove('is-hidden');
+	  modal.dataset.imgIdx = idx;
+	};
+
+	// set up modal handlers
+	document.body.addEventListener('keydown', function (event) {
+	  if (event.key === 'Escape') {
+	    modal.classList.add('is-hidden');
+	  }
+	  if (event.key === 'ArrowRight') {
+	    displayImage(parseInt(modal.dataset.imgIdx, 10) + 1);
+	  }
+	  if (event.key === 'ArrowLeft') {
+	    displayImage(parseInt(modal.dataset.imgIdx, 10) - 1);
+	  }
+	});
+
+	modal.addEventListener('click', function () {
+	  modal.classList.add('is-hidden');
+	});
+
+	// set up image click handlers
+	var handleClick = function handleClick(idx) {
+	  return function () {
+	    return displayImage(idx);
+	  };
+	};
+	imgs.forEach(function (img, idx) {
+	  img.addEventListener('click', handleClick(idx));
+	});
+
+/***/ }
+/******/ ]);

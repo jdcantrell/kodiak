@@ -5,11 +5,11 @@
   <nav class="nav has-shadow">
     <div class="container">
       <div class="nav-left">
-        <a class="nav-item is-active is-tab" href="/kodiak/">All Pages</a>
-        <a class="nav-item is-tab" href="/kodiak/new/">New Page</a>
+        <a class="nav-item is-active is-tab" href="{{ web_path }}kodiak/">All Pages</a>
+        <a class="nav-item is-tab" href="{{ web_path }}kodiak/new/">New Page</a>
       </div>
       <div class="nav-right">
-        <a class="nav-item" href="/kodiak/logout/">Logout</a>
+        <a class="nav-item" href="{{ web_path }}kodiak/logout/">Logout</a>
       </div>
     </div>
   </nav>
@@ -37,10 +37,10 @@
             <td>never</td>
           {% endif %}
           <td>{{ page.updated.strftime('%m/%d/%y at %I:%M%p') }}</td>
-          <td><a href="/kodiak/edit/{{ page.id }}/">Edit</a></td>
+          <td><a href="{{ web_path }}kodiak/edit/{{ page.id }}/">Edit</a></td>
 
           {% if page.published %}
-            <td><a href="/{{ page.view_url() }}">View</a></td>
+            <td><a href="{{ web_path }}{{ page.view_url() }}">View</a></td>
           {% else %}
             <td></td>
           {% endif %}
