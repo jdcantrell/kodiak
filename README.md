@@ -1,8 +1,6 @@
 #Kodiak - a personal photo blog/sharing tool
 
 Todo:
-- fix width calculation, it needs to account for padding that occurs
-  between images
 - use a translator to create images the actual html size? We'd then have
   a preview writer and a publish writer, this seems pretty reasonable
 - delete old folders when changing access (unset published date)
@@ -12,8 +10,10 @@ Todo:
 - Don't add two new lines between consecutive .. image:: tags
 - make .. images:: support multiline .. image:: docinfo tags
 - proper private support
+- improve first time user experience
 
 Done:
+- handle issue where image is too large because of fractional pixels
 - export theme width config values to js (for editing)
 - finish actual theme - separate from project slightly, add small py
   config file for setting paths
@@ -34,6 +34,8 @@ Done:
 - fix publishing button
 - Facebook/twitter microtags
 - flask-user-login
+- fix width calculation, it needs to account for padding that occurs
+  between images
 
 #Setup
 

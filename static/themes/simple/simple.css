@@ -13,7 +13,6 @@
   max-width: 1020px;
   display: block;
   margin: auto;
-  padding: 2px;
 }
 
 h1 {
@@ -23,6 +22,8 @@ h1 {
 
 img {
   display: inline-block;
+  padding: 2px 0;
+  cursor: pointer;
 }
 
 p {
@@ -39,11 +40,17 @@ p {
 
 .images-group {
   font-size: 0;
+  margin: auto;
+  width: 1000px;
 }
 
 .images-group img {
   display: inline-block;
-  padding: 2px;
+  padding: 2px 0;
+  padding-right: 4px;
+}
+.images-group img.last {
+  padding-right: 0px;
 }
 
 .modal {

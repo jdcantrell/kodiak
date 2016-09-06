@@ -15,8 +15,20 @@ def size_image(filename, width, height, attributes):
 
 def size_row(row, new_height):
     new_row = []
+    original_width = 0
+    rounded_width = 0
     for i in row:
-        img = size_image(i.rawsource, (new_height * i.aspect), new_height, i.attributes)
+        width = (new_height * i.aspect)
+        original_width += width
+        width = round(width)
+        rounded_width += width
+
+        if i == row[-1]:
+            i.attributes['class'] = 'last'
+            print (original_width - rounded_width)
+            width += (original_width - rounded_width)
+
+        img = size_image(i.rawsource, width, new_height, i.attributes)
         new_row.append(img)
     return new_row
 
@@ -36,6 +48,7 @@ class KodiakImage(images.Image):
 class Images(Directive):
 
     max_width = config['theme']['max_width']
+    image_padding = config['theme']['image_padding']
     target_height = config['theme']['target_thumb_height']
     image_path = config['image']['thumb_path']
 
@@ -54,8 +67,10 @@ class Images(Directive):
                 width, height = im.size
             aspect = width / float(height)
 
-            if current_height * (total_aspect_ratio + aspect) > self.max_width:
-                new_height = self.max_width /total_aspect_ratio
+            row_max_width = self.max_width - ((len(current_row) - 1) * self.image_padding)
+
+            if current_height * (total_aspect_ratio + aspect) > row_max_width:
+                new_height = row_max_width /total_aspect_ratio
                 new_row = size_row(current_row, new_height)
                 rows.append(new_row)
                 current_row = []
@@ -69,8 +84,9 @@ class Images(Directive):
             total_aspect_ratio += aspect
             current_row.append(img)
 
+        row_max_width = self.max_width - ((len(current_row) - 1) * self.image_padding)
         if len(current_row) > 1:
-            rows.append(size_row(current_row, self.max_width/total_aspect_ratio))
+            rows.append(size_row(current_row, row_max_width/total_aspect_ratio))
         if len(current_row) == 1:
             rows.append(current_row)
 

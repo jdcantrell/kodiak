@@ -1,4 +1,5 @@
 stylesheet: simple.css
 javascript: simple.js
 max_width: 1000
-target_thumb_height: 250
+image_padding: 4
+target_thumb_height: 240

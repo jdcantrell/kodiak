@@ -22,4 +22,4 @@ if __name__ == "__main__":
   elif len(sys.argv) > 1 and sys.argv[1] == 'add_user':
       add_user()
   else:
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=8080)

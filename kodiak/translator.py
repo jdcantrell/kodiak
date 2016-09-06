@@ -119,6 +119,8 @@ class Translator(HTMLTranslator):
             atts['width'] = node['width']
         if 'height' in node:
             atts['height'] = node['height']
+        if 'class' in node:
+            atts['class'] = node['class']
         style = []
         for att_name in 'width', 'height':
             if att_name in atts:
