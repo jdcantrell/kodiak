@@ -66,11 +66,11 @@ const uploadFile = (file) => {
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4) {
       if ((xhr.status >= 200 && xhr.status <= 200) || xhr.status === 304) {
-        uploadNext();
         if (xhr.responseText !== '') {
           const data = JSON.parse(xhr.responseText);
           // add image to rst
           addImage(data);
+          uploadNext();
         }
       }
     }

@@ -25,20 +25,36 @@ class open_graph_tag(Element):
         self.value = value
         Element.__init__(self)
 
+class twitter_card_tag(Element):
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        Element.__init__(self)
+
 class OpenGraphTransform(Transform):
     default_priority = 11000
 
     def apply(self):
         title_nodes = self.document.traverse(title)
         image_nodes = self.document.traverse(image)
+        has_data = False
 
         if len(title_nodes):
             title_text = title_nodes[0].children[0].rawsource
             self.document.insert(0, open_graph_tag('title', title_text))
+            self.document.insert(0, twitter_card_tag('title', title_text))
+            has_data = True
 
         if len(image_nodes):
-            image_text = image_nodes[0]['uri']
+            image_text = '%s%s' % (config['app']['host'], image_nodes[0]['uri'])
             self.document.insert(0, open_graph_tag('image', image_text))
+            self.document.insert(0, twitter_card_tag('image', image_text))
+            has_data = True
+
+        if has_data:
+            self.document.insert(0, twitter_card_tag('card', 'photo'))
+            self.document.insert(0, twitter_card_tag('site', config['app']['twitter_handle']))
+
 
 
 class KodiakWriter(Writer):
@@ -70,9 +86,14 @@ class Translator(HTMLTranslator):
 
     def visit_open_graph_tag(self, node):
         self.add_meta('<meta property="og:%s" content="%s" />' % (node.key, node.value))
+
+    def visit_twitter_card_tag(self, node):
         self.add_meta('<meta property="twitter:%s" content="%s" />' % (node.key, node.value))
 
     def depart_open_graph_tag(self, node):
+        pass
+
+    def depart_twitter_card_tag(self, node):
         pass
 
     def visit_images_group(self, node):

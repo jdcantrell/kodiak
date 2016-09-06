@@ -22,6 +22,8 @@ database:
 app:
   static_web_path: /static/
   web_path: /
+  host: https://goodrobot.net
+  twitter_username: @goodrobot
 
 # Generate a secret key:
 # >>> import os

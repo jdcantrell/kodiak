@@ -1,6 +1,7 @@
 #Kodiak - a personal photo blog/sharing tool
 
 Todo:
+- use metadata to fill in og/twitter card data when available
 - use a translator to create images the actual html size? We'd then have
   a preview writer and a publish writer, this seems pretty reasonable
 - delete old folders when changing access (unset published date)
@@ -13,6 +14,8 @@ Todo:
 - improve first time user experience
 - delete pages
 - padding on logout button
+- fix progress bar
+- fix upload queue (seems like we just upload everything at once)
 
 Done:
 - handle issue where image is too large because of fractional pixels
