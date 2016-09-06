@@ -11,6 +11,8 @@ Todo:
 - make .. images:: support multiline .. image:: docinfo tags
 - proper private support
 - improve first time user experience
+- delete pages
+- padding on logout button
 
 Done:
 - handle issue where image is too large because of fractional pixels
