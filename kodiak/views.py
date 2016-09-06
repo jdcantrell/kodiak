@@ -180,11 +180,11 @@ def upload():
         width, height = im.size
         if width > config['image']['max_size']['width'] or height > config['image']['max_size']['height']:
             im.thumbnail((config['image']['max_size']['width'], config['image']['max_size']['height']), Image.ANTIALIAS)
-            im.save('%s%s' % (config['image']['path'], filename), "JPEG")
+        im.save('%s%s' % (config['image']['path'], filename), "JPEG")
 
         if width > config['theme']['max_width']:
             im.thumbnail((config['theme']['max_width'], config['theme']['max_width'] * 2), Image.ANTIALIAS)
-            im.save('%s%s' % (config['image']['thumb_path'], filename), "JPEG")
+        im.save('%s%s' % (config['image']['thumb_path'], filename), "JPEG")
     return jsonify(name=filename)
 
 @app.route("/<slug>/", methods=['GET'])
