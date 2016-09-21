@@ -44,14 +44,14 @@ modal.childNodes[1].addEventListener('click', (event) => {
   event.stopPropagation();
   displayImage(parseInt(modal.dataset.imgIdx, 10) + 1);
 });
-modal.childNodes[1].addEventListener('touchend', (event) => {
+modal.childNodes[1].addEventListener('touch', (event) => {
   event.stopPropagation();
   displayImage(parseInt(modal.dataset.imgIdx, 10) + 1);
 });
 modal.addEventListener('click', () => { modal.classList.add('is-hidden'); });
-modal.addEventListener('touchend', () => { modal.classList.add('is-hidden'); });
+modal.addEventListener('touch', () => { modal.classList.add('is-hidden'); });
 
 // set up image click handlers
 const handleClick = (idx) => () => displayImage(idx);
 imgs.forEach((img, idx) => { img.addEventListener('click', handleClick(idx)); });
-imgs.forEach((img, idx) => { img.addEventListener('touchend', handleClick(idx)); });
+imgs.forEach((img, idx) => { img.addEventListener('touch', handleClick(idx)); });
