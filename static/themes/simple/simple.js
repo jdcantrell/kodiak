@@ -88,7 +88,18 @@
 	  }
 	});
 
+	modal.childNodes[1].addEventListener('click', function (event) {
+	  event.stopPropagation();
+	  displayImage(parseInt(modal.dataset.imgIdx, 10) + 1);
+	});
+	modal.childNodes[1].addEventListener('touchend', function (event) {
+	  event.stopPropagation();
+	  displayImage(parseInt(modal.dataset.imgIdx, 10) + 1);
+	});
 	modal.addEventListener('click', function () {
+	  modal.classList.add('is-hidden');
+	});
+	modal.addEventListener('touchend', function () {
 	  modal.classList.add('is-hidden');
 	});
 
@@ -100,6 +111,9 @@
 	};
 	imgs.forEach(function (img, idx) {
 	  img.addEventListener('click', handleClick(idx));
+	});
+	imgs.forEach(function (img, idx) {
+	  img.addEventListener('touchend', handleClick(idx));
 	});
 
 /***/ }

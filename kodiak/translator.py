@@ -4,6 +4,7 @@ from docutils.transforms import Transform
 from config import config
 import re
 from flask import render_template
+import jinja2
 
 class ImagePathTransform(Transform):
     default_priority = 10000
@@ -72,17 +73,23 @@ class Translator(HTMLTranslator):
     '''
     doctype = ('<!DOCTYPE html >\n')
     head_prefix_template = ('<html>\n<head>\n')
+
     def __init__(self, document):
         document.settings.embed_stylesheet = False
         document.settings.xml_declaration = False
         HTMLTranslator.__init__(self, document)
-        js = self.encode('%s%s' % (config['theme']['web_path'], config['theme']['javascript']))
-        self.body_suffix = ['<script src="%s"></script>\n</body>\n</html>\n' % js]
+        footer_html = self.render_template(config['theme']['theme_dir'], 'footer.html', web_path=config['theme']['web_path'])
+        head_html = self.render_template(config['theme']['theme_dir'], 'head.html', web_path=config['theme']['web_path'])
+        self.head.insert(0, head_html)
+        self.body_suffix = [footer_html]
+
+    def render_template(self, path, template, **context):
+        return jinja2.Environment(
+            loader=jinja2.FileSystemLoader(path + '/')
+        ).get_template(template).render(context)
 
     def stylesheet_call(self, path):
-        font = self.stylesheet_link % self.encode('https://fontlibrary.org/face/fantasque-sans-mono')
-        styles = self.stylesheet_link % self.encode('%s%s' % (config['theme']['web_path'], config['theme']['stylesheet']))
-        return  '%s %s' % (font, styles)
+        return  ''
 
     def visit_open_graph_tag(self, node):
         self.add_meta('<meta property="og:%s" content="%s" />' % (node.key, node.value))

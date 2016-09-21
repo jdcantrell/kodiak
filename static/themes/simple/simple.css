@@ -1,5 +1,5 @@
 /* base styles */
-.document {
+.document, .footer {
   max-width: 1020px;
   margin: auto;
   font-family: 'FantasqueSansMonoRegular';
@@ -14,6 +14,22 @@
   display: block;
   margin: auto;
 }
+
+.footer {
+  text-align:center;
+  margin: 20px 0
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #007700;
+}
+
+a:hover, a:active {
+  text-decoration: underline;
+  color: #009900;
+}
+
 
 h1 {
   text-align: center;

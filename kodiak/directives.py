@@ -25,7 +25,6 @@ def size_row(row, new_height):
 
         if i == row[-1]:
             i.attributes['class'] = 'last'
-            print (original_width - rounded_width)
             width += (original_width - rounded_width)
 
         img = size_image(i.rawsource, width, new_height, i.attributes)

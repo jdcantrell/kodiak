@@ -19,13 +19,21 @@ from models import Page, User
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+def favicon():
+    idx =  time.localtime().tm_hour / 6
+    print idx
+    return '%s/images/kodiak-%s.png' % (
+        config['app']['static_web_path'],
+        ['morning', 'day', 'sunset', 'night'][idx]
+    )
+
 @login_manager.user_loader
 def load_user(user_id):
     return db_session.query(User).get(user_id)
 
 @app.route('/kodiak/login/', methods=['GET'])
 def login():
-    return render_template('login.html')
+    return render_template('login.html', favicon=favicon())
 
 
 @app.route('/kodiak/login/', methods=['POST'])
@@ -59,10 +67,11 @@ def index():
             pages=records,
             current_user=current_user,
             web_path=config['app']['web_path'],
+            favicon=favicon(),
             static_web_path=config['app']['static_web_path'],
         )
     else:
-        return render_template('index.html')
+        return render_template('index.html', favicon=favicon())
 
 @app.route("/kodiak/new/")
 @login_required
@@ -70,6 +79,7 @@ def new_page():
     record = Page("New Page")
     record.data = render_template(
         'new.rst',
+        favicon=favicon(),
         today=datetime.now().strftime('%B %d, %Y')
     )
     db_session.add(record)
@@ -87,6 +97,7 @@ def edit_page(id):
         published_date = 'Never';
     return render_template(
         'edit.html',
+        favicon=favicon(),
         id=record.id,
         data=record.data,
         access=record.access,
