@@ -22,7 +22,7 @@ login_manager.init_app(app)
 def favicon():
     idx =  time.localtime().tm_hour / 6
     print idx
-    return '%s/images/kodiak-%s.png' % (
+    return '%simages/kodiak-%s.png' % (
         config['app']['static_web_path'],
         ['morning', 'day', 'sunset', 'night'][idx]
     )
