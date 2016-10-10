@@ -1,4 +1,4 @@
-/* globals ace */
+/* globals ace, upload_path */
 let editor;
 
 const previewFrame = document.getElementById('preview');
@@ -16,6 +16,7 @@ const preview = (force) => {
 const showDropTarget = () => {
   dropTarget.style.display = 'flex';
 };
+
 const hideDropTarget = () => {
   dropTarget.style.display = 'none';
 };
@@ -147,9 +148,13 @@ const run = () => {
   const publishBtn = document.getElementById('publish');
   publishBtn.addEventListener('click', () => {
     publishBtn.classList.add('is-loading');
-    fetch('publish/', { credentials: 'same-origin' }).then(
-      () => { publishBtn.classList.remove('is-loading'); }
-    );
+    fetch('publish/', { credentials: 'same-origin' })
+      .then((response) => response.json())
+      .then((json) => {
+        publishBtn.classList.remove('is-loading');
+        document.getElementById('published').innerHTML = json.published_date;
+      }
+      );
   });
 
   const publicBtn = document.getElementById('public');

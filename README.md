@@ -2,8 +2,6 @@
 
 Todo:
 - use metadata to fill in og/twitter card data when available
-- use a translator to create images the actual html size? We'd then have
-  a preview writer and a publish writer, this seems pretty reasonable
 - delete old folders when changing access (unset published date)
 - Improve rst error messaging and handling
 - RSS feed (multiple, public, limited, all)
@@ -16,8 +14,15 @@ Todo:
 - padding on logout button
 - fix progress bar
 - fix upload queue (seems like we just upload everything at once)
+- pass static_web_path to themes instead of just the theme path
+- move more of the skeleton html into templates and out of docutils
+- re-generate all
+- make the transition between images nicer (use image onload etc)
+
 
 Done:
+- use css to set image widths instead of height/width attrs directly (if
+  we decide to support mobile) - conflicts with "use a translator..."
 - handle issue where image is too large because of fractional pixels
 - export theme width config values to js (for editing)
 - finish actual theme - separate from project slightly, add small py

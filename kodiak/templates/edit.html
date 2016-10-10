@@ -41,7 +41,12 @@
       <strong>Saved:</strong> <span id="last_saved">{{ last_saved }}</span>
     </div>
   </div>
-  <iframe src="{{ web_path }}kodiak/edit/{{ id }}/preview/" name="preview_frame" id="preview" class="preview"></iframe>
+  <div class="preview-column">
+    <iframe src="{{ web_path }}kodiak/edit/{{ id }}/preview/" name="preview_frame" id="preview" class="preview"></iframe>
+    <div class="status">&nbsp;
+      <strong>Published:</strong> <span id="published">{{ published_date }}</span>
+    </div>
+  </div>
 </div>
 <form id="preview_form" action="{{ web_path }}kodiak/edit/{{ id }}/save/" method="post" target="preview_frame">
   <input id="rst" name="rst" type="hidden" value="" />

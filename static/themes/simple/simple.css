@@ -36,11 +36,6 @@ h1 {
   margin-bottom: 0;
 }
 
-img {
-  display: inline-block;
-  padding: 2px 0;
-  cursor: pointer;
-}
 
 p {
   text-indent: 2em;
@@ -54,19 +49,37 @@ p {
   text-align: center;
 }
 
-.images-group {
-  font-size: 0;
-  margin: auto;
-  width: 1000px;
-}
-
-.images-group img {
+img {
   display: inline-block;
   padding: 2px 0;
-  padding-right: 4px;
+  cursor: pointer;
+  width: 100%;
 }
-.images-group img.last {
-  padding-right: 0px;
+.images-group img {
+  display: inline-block;
+  width:100%;
+}
+
+@media (min-width:1020px) {
+  img {
+    width: calc(100% - 20px)
+  }
+
+  .images-group {
+    font-size: 0;
+    margin: auto;
+    width: 1000px;
+  }
+
+  .images-group img {
+    padding: 2px 0;
+    padding-right: 4px;
+    width: auto;
+  }
+
+  .images-group img.last {
+    padding-right: 0px;
+  }
 }
 
 .modal {

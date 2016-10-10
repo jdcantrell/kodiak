@@ -1,10 +1,16 @@
 from docutils.writers.html4css1 import HTMLTranslator, Writer
-from docutils.nodes import date, field, image, title, Element, TextElement, reference
+from docutils.nodes import date, field, image, title, Element, TextElement, reference, raw
 from docutils.transforms import Transform
 from config import config
 import re
 from flask import render_template
 import jinja2
+
+
+def render_theme_template(path, template, **context):
+    return jinja2.Environment(
+        loader=jinja2.FileSystemLoader(path + '/')
+    ).get_template(template).render(context)
 
 class ImagePathTransform(Transform):
     default_priority = 10000
@@ -18,6 +24,31 @@ class ImagePathTransform(Transform):
                 # idk but don't remove this comment
                 node['full_src'] = full_uri
                 node['uri'] = uri
+
+class ImageSizeToCss(Transform):
+    default_priority = 10001
+
+    next_id = 0;
+
+    def getNextId(self):
+        self.next_id += 1;
+        return self.next_id;
+
+    def apply(self):
+        image_nodes = self.document.traverse(image)
+        styles = []
+        for node in image_nodes:
+            if 'width' in node and 'height' in node:
+                class_name = 'img%s' % self.getNextId()
+                if 'class' in node:
+                    node['class'] = '%s %s' % (class_name, node['class'])
+                else:
+                    node['class'] = class_name
+                styles.append('.%s { width: %spx; height: %spx }' % (class_name, node['width'], node['height']))
+                del node['height']
+                del node['width']
+        stylesheet = render_theme_template(config['theme']['theme_dir'], 'image_stylesheet.html', image_styles= "\n".join(styles), web_path=config['theme']['web_path'])
+        self.document.insert(0, raw('', stylesheet, format='html'))
 
 
 class open_graph_tag(Element):
@@ -60,7 +91,7 @@ class OpenGraphTransform(Transform):
 
 class KodiakWriter(Writer):
     def get_transforms(self):
-        return Writer.get_transforms(self) + [ImagePathTransform, OpenGraphTransform]
+        return Writer.get_transforms(self) + [ImagePathTransform, ImageSizeToCss, OpenGraphTransform]
 
 class Translator(HTMLTranslator):
 
@@ -78,8 +109,8 @@ class Translator(HTMLTranslator):
         document.settings.embed_stylesheet = False
         document.settings.xml_declaration = False
         HTMLTranslator.__init__(self, document)
-        footer_html = self.render_template(config['theme']['theme_dir'], 'footer.html', web_path=config['theme']['web_path'])
-        head_html = self.render_template(config['theme']['theme_dir'], 'head.html', web_path=config['theme']['web_path'])
+        footer_html = render_theme_template(config['theme']['theme_dir'], 'footer.html', web_path=config['theme']['web_path'])
+        head_html = render_theme_template(config['theme']['theme_dir'], 'head.html', web_path=config['theme']['web_path'])
         self.head.insert(0, head_html)
         self.body_suffix = [footer_html]
 
