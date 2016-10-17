@@ -65,20 +65,15 @@ iframe.preview {
   border-left: 1px solid #ccc;
 }
 
-.dropTarget {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  font-size: 18px;
-  align-items: center;
-  display: none;
-  background-color: #0000aacc;
-  color: #fff;
-  z-index: 10;
-}
-
-.dropTarget > div {
-  margin: auto;
+#dropTarget {
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background-color:rgba(0,0,0,.6);
+  position:absolute;
+  z-index:10;
+  top:0;
+  bottom:0;
+  width:50vw;
+  margin-top:42px;
 }

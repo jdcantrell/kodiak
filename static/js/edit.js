@@ -48,6 +48,7 @@
 
 	/* globals ace, upload_path */
 	var editor = void 0;
+	var useImages = false;
 
 	var previewFrame = document.getElementById('preview');
 	var dropTarget = document.getElementById('dropTarget');
@@ -64,6 +65,7 @@
 	var showDropTarget = function showDropTarget() {
 	  dropTarget.style.display = 'flex';
 	};
+
 	var hideDropTarget = function hideDropTarget() {
 	  dropTarget.style.display = 'none';
 	};
@@ -91,7 +93,12 @@
 
 	var addImage = function addImage(data) {
 	  var session = editor.session;
-	  var text = '\n\n.. image:: ' + data.name;
+	  var text = void 0;
+	  if (!useImages) {
+	    text = '.. image:: ' + data.name + '\n';
+	  } else {
+	    text = '   ' + data.name + '\n';
+	  }
 
 	  session.insert({
 	    row: session.getLength(),
@@ -131,7 +138,6 @@
 
 	var addFile = function addFile(file) {
 	  fileQueue.push(file);
-	  uploadNext();
 	};
 
 	var run = function run() {
@@ -153,7 +159,7 @@
 	  }, 5000);
 
 	  previewFrame.addEventListener('load', function () {
-	    var scale = (previewFrame.offsetWidth - 10) / window.theme_width;
+	    var scale = (previewFrame.offsetWidth - 20) / window.theme_width;
 	    if (scale < 1) {
 	      previewFrame.contentDocument.body.style.transform = 'scale(' + scale + ')';
 	      previewFrame.contentDocument.body.style.minWidth = window.theme_width + 'px';
@@ -162,32 +168,41 @@
 	    }
 	  });
 
-	  document.body.addEventListener('dragover', function () {
-	    showDropTarget();
-	  });
-
 	  var preventDefault = function preventDefault(e) {
 	    e.preventDefault();
 	    e.stopPropagation();
 	  };
 
-	  dropTarget.addEventListener('dragleave', function (e) {
-	    preventDefault(e);
-	    hideDropTarget();
+	  document.body.addEventListener('dragover', function (event) {
+	    showDropTarget();
+	    preventDefault(event);
 	  });
 
-	  dropTarget.addEventListener('drag', preventDefault);
-	  dropTarget.addEventListener('dragstart', preventDefault);
-	  dropTarget.addEventListener('dragend', preventDefault);
-	  dropTarget.addEventListener('dragover', preventDefault, true);
-	  dropTarget.addEventListener('dragenter', preventDefault);
-	  dropTarget.addEventListener('drop', function (e) {
+	  document.body.addEventListener('dragleave', function (e) {
+	    hideDropTarget();
+	    preventDefault(e);
+	  });
+
+	  document.body.addEventListener('drag', preventDefault);
+	  document.addEventListener('dragstart', preventDefault);
+	  document.addEventListener('dragend', preventDefault);
+	  document.addEventListener('dragenter', preventDefault);
+	  document.body.addEventListener('drop', function (e) {
 	    preventDefault(e);
 	    hideDropTarget();
 	    var files = e.dataTransfer.files;
+	    useImages = false;
+	    editor.session.insert({ row: editor.session.getLength(), column: 0 }, '\n\n');
+	    if (files.length > 1) {
+	      editor.session.insert({ row: editor.session.getLength(), column: 0 }, '.. images::\n');
+	      useImages = true;
+	    }
 	    for (var i = 0; i < files.length; i++) {
 	      var file = files[i];
 	      addFile(file);
+	    }
+	    if (fileQueue.length === files.length) {
+	      uploadNext();
 	    }
 	  });
 

@@ -1,5 +1,6 @@
 /* globals ace, upload_path */
 let editor;
+let useImages = false;
 
 const previewFrame = document.getElementById('preview');
 const dropTarget = document.getElementById('dropTarget');
@@ -45,7 +46,12 @@ const uploadNext = () => {
 
 const addImage = (data) => {
   const session = editor.session;
-  const text = `\n\n.. image:: ${data.name}`;
+  let text;
+  if (!useImages) {
+    text = `.. image:: ${data.name}\n`;
+  } else {
+    text = `   ${data.name}\n`;
+  }
 
   session.insert({
     row: session.getLength(),
@@ -86,7 +92,6 @@ const uploadFile = (file) => {
 
 const addFile = (file) => {
   fileQueue.push(file);
-  uploadNext();
 };
 
 const run = () => {
@@ -106,7 +111,7 @@ const run = () => {
   window.setInterval(() => preview(), 5000);
 
   previewFrame.addEventListener('load', () => {
-    const scale = (previewFrame.offsetWidth - 10) / window.theme_width;
+    const scale = (previewFrame.offsetWidth - 20) / window.theme_width;
     if (scale < 1) {
       previewFrame.contentDocument.body.style.transform = `scale(${scale})`;
       previewFrame.contentDocument.body.style.minWidth = `${window.theme_width}px`;
@@ -115,32 +120,42 @@ const run = () => {
     }
   });
 
-  document.body.addEventListener('dragover', () => {
-    showDropTarget();
-  });
-
   const preventDefault = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  dropTarget.addEventListener('dragleave', (e) => {
-    preventDefault(e);
-    hideDropTarget();
+  document.body.addEventListener('dragover', (event) => {
+    showDropTarget();
+    preventDefault(event);
   });
 
-  dropTarget.addEventListener('drag', preventDefault);
-  dropTarget.addEventListener('dragstart', preventDefault);
-  dropTarget.addEventListener('dragend', preventDefault);
-  dropTarget.addEventListener('dragover', preventDefault, true);
-  dropTarget.addEventListener('dragenter', preventDefault);
-  dropTarget.addEventListener('drop', (e) => {
+
+  document.body.addEventListener('dragleave', (e) => {
+    hideDropTarget();
+    preventDefault(e);
+  });
+
+  document.body.addEventListener('drag', preventDefault);
+  document.addEventListener('dragstart', preventDefault);
+  document.addEventListener('dragend', preventDefault);
+  document.addEventListener('dragenter', preventDefault);
+  document.body.addEventListener('drop', (e) => {
     preventDefault(e);
     hideDropTarget();
     const files = e.dataTransfer.files;
+    useImages = false;
+    editor.session.insert({ row: editor.session.getLength(), column: 0 }, '\n\n');
+    if (files.length > 1) {
+      editor.session.insert({ row: editor.session.getLength(), column: 0 }, '.. images::\n');
+      useImages = true;
+    }
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       addFile(file);
+    }
+    if (fileQueue.length === files.length) {
+      uploadNext();
     }
   });
 

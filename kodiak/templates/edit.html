@@ -7,9 +7,7 @@
 {% endblock %}
 {% block body_class %}edit{% endblock %}
 {% block content %}
-<div id="dropTarget" class="dropTarget">
-  <div>Drop images to begin uploading</div>
-</div>
+
 <div class="toolbar">
   <nav class="level">
     <div class="level-left">
@@ -36,6 +34,16 @@
 
 <div class="edit-columns">
   <div class="editor-column">
+
+    <div id="dropTarget">
+      <div class="message is-info" >
+        <div class="message-header">Drop images here!</div>
+        <div class="message-body">
+          Drop files here to begin uploading.
+        </div>
+      </div>
+    </div>
+
     <textarea class="editor" id="ace_editor">{{ data }}</textarea>
     <div class="status">&nbsp;
       <strong>Saved:</strong> <span id="last_saved">{{ last_saved }}</span>

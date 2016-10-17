@@ -55,6 +55,9 @@ img {
   cursor: pointer;
   width: 100%;
 }
+img::before {
+  content:attr(alt);
+}
 .images-group img {
   display: inline-block;
   width:100%;
