@@ -64,7 +64,7 @@ img::before {
 }
 
 @media (min-width:1020px) {
-  document > img {
+  .document > img {
     width: calc(100% - 20px)
   }
 
