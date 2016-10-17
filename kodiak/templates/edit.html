@@ -8,29 +8,30 @@
 {% block body_class %}edit{% endblock %}
 {% block content %}
 
-<div class="toolbar">
-  <nav class="level">
-    <div class="level-left">
-      <div class="level-item">
+  <nav class="nav has-shadow">
+    <div class="nav-left">
+      <a class="nav-item is-brand" href="{{ web_path }}kodiak/">
+        <img style="width:auto; display:inline-block; vertical-align:middle; width:32px; height:32px;max-height:32px !important;" src="{{ favicon }}">
+      </a>
+      <div class="nav-item">
         <div class="control has-addons" >
           <button id='public' type="button" class="button {% if access == 'public' %}is-primary{% endif %}">Public</button>
-          <button id='limited' type="button" class="button {% if access == 'limited' %}is-primary{% endif %}">Limited</button>
-          <button id='private' type="button" class="button {% if access == 'private' %}is-primary{% endif %}">Private</button>
+          <button id='limited' type="button" style="margin-left:0" class="button {% if access == 'limited' %}is-primary{% endif %}">Limited</button>
+          <button id='private' type="button" style="margin-left:0" class="button {% if access == 'private' %}is-primary{% endif %}">Private</button>
         </div>
       </div>
     </div>
-    <div class="level-right">
-      <div id="uploading" class="level-item" style="display: none">
+    <div class="nav-right">
+      <div id="uploading" class="nav-item" style="display: none">
         <span id="upload_text"></span>
         <progress id="progress" class="progress is-small" value="0" max="100">
       </div>
-      <div class="level-item">
+      <div class="nav-item">
         <a href="preview/" target="preview" class="button is-link">Preview</a>
         <button id="publish" type="button" class="button is-success">Publish</button>
       </div>
     </div>
   </nav>
-</div>
 
 <div class="edit-columns">
   <div class="editor-column">

@@ -64,7 +64,7 @@ img::before {
 }
 
 @media (min-width:1020px) {
-  img {
+  document > img {
     width: calc(100% - 20px)
   }
 
@@ -102,6 +102,7 @@ img::before {
   max-width: 90vw;
   max-height: 85vh;
   display: block;
+  padding: 0;
 }
 
 .modalContent {

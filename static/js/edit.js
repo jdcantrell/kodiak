@@ -81,8 +81,8 @@
 	    var file = fileQueue.shift();
 	    var statusText = document.getElementById('upload_text');
 	    var status = file.name;
-	    if (fileQueue.length) {
-	      status = status + ' (' + fileQueue.length + ')';
+	    if (fileQueue.length > 1) {
+	      status = status + ' (' + (fileQueue.length + 1) + ')';
 	    }
 	    statusText.innerHTML = status;
 	    uploadFile(file);

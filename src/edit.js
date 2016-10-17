@@ -33,8 +33,8 @@ const uploadNext = () => {
     const file = fileQueue.shift();
     const statusText = document.getElementById('upload_text');
     let status = file.name;
-    if (fileQueue.length) {
-      status = `${status} (${fileQueue.length})`;
+    if (fileQueue.length > 1) {
+      status = `${status} (${fileQueue.length + 1})`;
     }
     statusText.innerHTML = status;
     uploadFile(file);
